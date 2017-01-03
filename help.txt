@@ -1,0 +1,18 @@
+//Compile Thrift
+thrift -gen cpp fileserver.thrift
+
+//Compile Server
+g++ lock_constants.cpp lock_types.cpp resourceserver.cpp resourceserver_server.skeleton.cpp -o resourceserver.server -lthrift -std=c++11
+
+//Compile Client
+g++ lock_constants.cpp lock_types.cpp resourceserver.cpp ../resource_client.cpp -o resource.client -lthrift -std=c++11
+
+
+//Start Server
+./file.server
+
+// Start Client
+./file.client
+
+// 100 MB Datei erstellen
+dd if=/dev/zero of=file.txt count=10000 bs=10000

@@ -2,7 +2,7 @@
 thrift -gen cpp fileserver.thrift
 
 //Compile Server
-g++ lock_constants.cpp lock_types.cpp resourceserver.cpp resourceserver_server.skeleton.cpp -o resourceserver.server -lthrift -std=c++11
+g++ lock_constants.cpp lock_types.cpp resourceserver.cpp server.cpp -o resourceserver.server -lthrift -std=c++11
 
 //Compile Client
 g++ lock_constants.cpp lock_types.cpp resourceserver.cpp ../resource_client.cpp -o resource.client -lthrift -std=c++11

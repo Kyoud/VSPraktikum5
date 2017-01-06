@@ -24,21 +24,26 @@ using namespace ::apache::thrift::server;
 
 using boost::shared_ptr;
 
+//vector for the lamport servers
+
+
 class resourceserverHandler : virtual public resourceserverIf {
  public:
   resourceserverHandler() {
     // Your initialization goes here
 
-
+	
   }
 
   void lock() {
+	//unlock();
+//std::vector<resourceserverClient> servers;
     //connect to resource server 9091 res1
     boost::shared_ptr<TSocket> socket(new TSocket("127.0.0.1", 9091));
     boost::shared_ptr<TTransport> transport(new TBufferedTransport(socket));
     boost::shared_ptr<TProtocol> protocol(new TBinaryProtocol(transport));
     resourceserverClient res1(protocol);
-    std::vector<TBinaryProtocol> servers;
+    
     servers.push_back(res1);
     // Your implementation goes here
 	 try {
@@ -70,6 +75,8 @@ class resourceserverHandler : virtual public resourceserverIf {
     // Your implementation goes here
     printf("ack\n");
   }
+private:
+std::vector<resourceserverClient> servers;
 
 };
 
@@ -89,6 +96,17 @@ int main(int argc, char **argv) {
 
 
   TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+try {
+	serverTransport->open();
+	
+	  server.resourceserverHandler();
+	serverTransport->close();
+	
+	
+    } catch (TException &tx) {
+        std::cout << "error calling server: " << tx.what() << std::endl;
+    }
+
   server.serve();
   return 0;
 }
